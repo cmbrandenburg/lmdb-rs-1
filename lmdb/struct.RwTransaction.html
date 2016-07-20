@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `RwTransaction` struct in crate `lmdb`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, RwTransaction">
+
+    <title>lmdb::RwTransaction - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>lmdb</a></p><script>window.sidebarCurrent = {name: 'RwTransaction', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>lmdb</a>::<wbr><a class='struct' href=''>RwTransaction</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-1238' class='srclink' href='../src/lmdb/src/transaction.rs.html#193-196' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct RwTransaction&lt;'env&gt; {
+    // some fields omitted
+}</pre><div class='docblock'><p>An LMDB read-write transaction.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'env&gt; <a class='struct' href='../lmdb/struct.RwTransaction.html' title='lmdb::RwTransaction'>RwTransaction</a>&lt;'env&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1246' class='srclink' href='../src/lmdb/src/transaction.rs.html#204-355' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.create_db' class='method'><code>unsafe fn <a href='#method.create_db' class='fnname'>create_db</a>(&amp;self, name: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;, flags: <a class='struct' href='../lmdb/struct.DatabaseFlags.html' title='lmdb::DatabaseFlags'>DatabaseFlags</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>&gt;</code></h4>
+<div class='docblock'><p>Opens a database in the provided transaction, creating it if necessary.</p>
+
+<p>If <code>name</code> is <code>None</code>, then the default database will be opened, otherwise
+a named database will be opened. The database handle will be private to
+the transaction until the transaction is successfully committed. If the
+transaction is aborted the returned database handle should no longer be
+used.</p>
+
+<p>Prefer using <code>Environment::create_db</code>.</p>
+
+<h2 id='safety' class='section-header'><a href='#safety'>Safety</a></h2>
+<ul>
+<li>This function (as well as <code>Environment::open_db</code>,
+<code>Environment::create_db</code>, and <code>Database::open</code>) <strong>must not</strong> be called
+from multiple concurrent transactions in the same environment. A
+transaction which uses this function must finish (either commit or
+abort) before any other transaction may use this function.</li>
+</ul>
+</div><h4 id='method.open_rw_cursor' class='method'><code>fn <a href='#method.open_rw_cursor' class='fnname'>open_rw_cursor</a>&lt;'txn&gt;(&amp;'txn mut self, db: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='struct' href='../lmdb/struct.RwCursor.html' title='lmdb::RwCursor'>RwCursor</a>&lt;'txn&gt;&gt;</code></h4>
+<div class='docblock'><p>Opens a new read-write cursor on the given database and transaction.</p>
+</div><h4 id='method.put' class='method'><code>fn <a href='#method.put' class='fnname'>put</a>&lt;K,&nbsp;D&gt;(&amp;mut self, database: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>, key: &amp;K, data: &amp;D, flags: <a class='struct' href='../lmdb/struct.WriteFlags.html' title='lmdb::WriteFlags'>WriteFlags</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt; <span class='where'>where K: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;, D: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;</span></code></h4>
+<div class='docblock'><p>Stores an item into a database.</p>
+
+<p>This function stores key/data pairs in the database. The default
+behavior is to enter the new key/data pair, replacing any previously
+existing key if duplicates are disallowed, or adding a duplicate data
+item if duplicates are allowed (<code>DatabaseFlags::DUP_SORT</code>).</p>
+</div><h4 id='method.reserve' class='method'><code>fn <a href='#method.reserve' class='fnname'>reserve</a>&lt;'txn,&nbsp;K&gt;(&amp;'txn mut self, database: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>, key: &amp;K, len: <a class='type' href='../libc/type.size_t.html' title='libc::size_t'>size_t</a>, flags: <a class='struct' href='../lmdb/struct.WriteFlags.html' title='lmdb::WriteFlags'>WriteFlags</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'txn mut [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt; <span class='where'>where K: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;</span></code></h4>
+<div class='docblock'><p>Returns a buffer which can be used to write a value into the item at the
+given key and with the given length. The buffer must be completely
+filled by the caller.</p>
+</div><h4 id='method.del' class='method'><code>fn <a href='#method.del' class='fnname'>del</a>&lt;K&gt;(&amp;mut self, database: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>, key: &amp;K, data: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt; <span class='where'>where K: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;</span></code></h4>
+<div class='docblock'><p>Deletes an item from a database.</p>
+
+<p>This function removes key/data pairs from the database. If the database
+does not support sorted duplicate data items (<code>DatabaseFlags::DUP_SORT</code>)
+the data parameter is ignored.  If the database supports sorted
+duplicates and the data parameter is <code>None</code>, all of the duplicate data
+items for the key will be deleted. Otherwise, if the data parameter is
+<code>Some</code> only the matching data item will be deleted. This function will
+return <code>Error::NotFound</code> if the specified key/data pair is not in the
+database.</p>
+</div><h4 id='method.clear_db' class='method'><code>fn <a href='#method.clear_db' class='fnname'>clear_db</a>(&amp;mut self, db: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Empties the given database. All items will be removed.</p>
+</div><h4 id='method.drop_db' class='method'><code>unsafe fn <a href='#method.drop_db' class='fnname'>drop_db</a>(&amp;mut self, db: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Drops the database from the environment.</p>
+
+<h2 id='safety-1' class='section-header'><a href='#safety-1'>Safety</a></h2>
+<p>This method is unsafe in the same ways as <code>Environment::close_db</code>, and
+should be used accordingly.</p>
+</div><h4 id='method.begin_nested_txn' class='method'><code>fn <a href='#method.begin_nested_txn' class='fnname'>begin_nested_txn</a>&lt;'txn&gt;(&amp;'txn mut self) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='struct' href='../lmdb/struct.RwTransaction.html' title='lmdb::RwTransaction'>RwTransaction</a>&lt;'txn&gt;&gt;</code></h4>
+<div class='docblock'><p>Begins a new nested transaction inside of this transaction.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;'env&gt; <a class='trait' href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../lmdb/struct.RwTransaction.html' title='lmdb::RwTransaction'>RwTransaction</a>&lt;'env&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1242' class='srclink' href='../src/lmdb/src/transaction.rs.html#198-202' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.drop' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+<div class='docblock'><p>A method called when the value goes out of scope. <a href="https://doc.rust-lang.org/nightly/core/ops/trait.Drop.html#tymethod.drop">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'env&gt; <a class='trait' href='../lmdb/trait.Transaction.html' title='lmdb::Transaction'>Transaction</a> for <a class='struct' href='../lmdb/struct.RwTransaction.html' title='lmdb::RwTransaction'>RwTransaction</a>&lt;'env&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-1310' class='srclink' href='../src/lmdb/src/transaction.rs.html#357-361' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.txn' class='method'><code>fn <a href='../lmdb/trait.Transaction.html#tymethod.txn' class='fnname'>txn</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.pointer.html'>*mut </a><a class='enum' href='../lmdb_sys/ffi/enum.MDB_txn.html' title='lmdb_sys::ffi::MDB_txn'>MDB_txn</a></code></h4>
+<div class='docblock'><p>Returns a raw pointer to the underlying LMDB transaction. <a href="../lmdb/trait.Transaction.html#tymethod.txn">Read more</a></p>
+</div><h4 id='method.commit' class='method'><code>fn <a href='../lmdb/trait.Transaction.html#method.commit' class='fnname'>commit</a>(self) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.tuple.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Commits the transaction. <a href="../lmdb/trait.Transaction.html#method.commit">Read more</a></p>
+</div><h4 id='method.abort' class='method'><code>fn <a href='../lmdb/trait.Transaction.html#method.abort' class='fnname'>abort</a>(self)</code></h4>
+<div class='docblock'><p>Aborts the transaction. <a href="../lmdb/trait.Transaction.html#method.abort">Read more</a></p>
+</div><h4 id='method.open_db' class='method'><code>unsafe fn <a href='../lmdb/trait.Transaction.html#method.open_db' class='fnname'>open_db</a>(&amp;self, name: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>&gt;) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>&gt;</code></h4>
+<div class='docblock'><p>Opens a database in the transaction. <a href="../lmdb/trait.Transaction.html#method.open_db">Read more</a></p>
+</div><h4 id='method.get' class='method'><code>fn <a href='../lmdb/trait.Transaction.html#method.get' class='fnname'>get</a>&lt;'txn,&nbsp;K&gt;(&amp;'txn self, database: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>, key: &amp;K) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;'txn [</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt; <span class='where'>where K: <a class='trait' href='https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html' title='core::convert::AsRef'>AsRef</a>&lt;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>[</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>&gt;</span></code></h4>
+<div class='docblock'><p>Gets an item from a database. <a href="../lmdb/trait.Transaction.html#method.get">Read more</a></p>
+</div><h4 id='method.open_ro_cursor' class='method'><code>fn <a href='../lmdb/trait.Transaction.html#method.open_ro_cursor' class='fnname'>open_ro_cursor</a>&lt;'txn&gt;(&amp;'txn self, db: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='struct' href='../lmdb/struct.RoCursor.html' title='lmdb::RoCursor'>RoCursor</a>&lt;'txn&gt;&gt;</code></h4>
+<div class='docblock'><p>Open a new read-only cursor on the given database.</p>
+</div><h4 id='method.db_flags' class='method'><code>fn <a href='../lmdb/trait.Transaction.html#method.db_flags' class='fnname'>db_flags</a>(&amp;self, db: <a class='struct' href='../lmdb/struct.Database.html' title='lmdb::Database'>Database</a>) -&gt; <a class='type' href='../lmdb/type.Result.html' title='lmdb::Result'>Result</a>&lt;<a class='struct' href='../lmdb/struct.DatabaseFlags.html' title='lmdb::DatabaseFlags'>DatabaseFlags</a>&gt;</code></h4>
+<div class='docblock'><p>Gets the option flags for the given database in the transaction.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "lmdb";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
