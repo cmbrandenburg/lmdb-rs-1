@@ -105,6 +105,7 @@ pub trait Transaction : Sized {
 }
 
 /// An LMDB read-only transaction.
+#[derive(Debug)]
 pub struct RoTransaction<'env> {
     txn: *mut ffi::MDB_txn,
     _marker: PhantomData<&'env ()>,
@@ -161,6 +162,7 @@ impl <'env> Transaction for RoTransaction<'env> {
 }
 
 /// An inactive read-only transaction.
+#[derive(Debug)]
 pub struct InactiveTransaction<'env> {
     txn: *mut ffi::MDB_txn,
     _marker: PhantomData<&'env ()>,
@@ -190,6 +192,7 @@ impl <'env> InactiveTransaction<'env> {
 }
 
 /// An LMDB read-write transaction.
+#[derive(Debug)]
 pub struct RwTransaction<'env> {
     txn: *mut ffi::MDB_txn,
     _marker: PhantomData<&'env ()>,

@@ -97,6 +97,7 @@ pub trait Cursor<'txn> {
 }
 
 /// A read-only cursor for navigating the items within a database.
+#[derive(Debug)]
 pub struct RoCursor<'txn> {
     cursor: *mut ffi::MDB_cursor,
     _marker: PhantomData<fn() -> &'txn ()>,
@@ -130,6 +131,7 @@ impl <'txn> RoCursor<'txn> {
 }
 
 /// A read-only cursor for navigating items within a database.
+#[derive(Debug)]
 pub struct RwCursor<'txn> {
     cursor: *mut ffi::MDB_cursor,
     _marker: PhantomData<fn() -> &'txn ()>,
@@ -202,6 +204,7 @@ unsafe fn val_to_slice<'a>(val: ffi::MDB_val) -> &'a [u8] {
     slice::from_raw_parts(val.mv_data as *const u8, val.mv_size as usize)
 }
 
+#[derive(Debug)]
 pub struct Iter<'txn> {
     cursor: *mut ffi::MDB_cursor,
     op: c_uint,
@@ -243,6 +246,7 @@ impl <'txn> Iterator for Iter<'txn> {
     }
 }
 
+#[derive(Debug)]
 pub struct IterDup<'txn> {
     cursor: *mut ffi::MDB_cursor,
     op: c_uint,

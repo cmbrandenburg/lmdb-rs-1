@@ -30,6 +30,7 @@ impl OsStrExtLmdb for OsStr {
 /// An LMDB environment.
 ///
 /// An environment supports multiple databases, all residing in the same shared-memory map.
+#[derive(Debug)]
 pub struct Environment {
     env: *mut ffi::MDB_env,
     dbi_open_mutex: Mutex<()>,
