@@ -1,4 +1,5 @@
 use libc::{c_void, size_t, c_uint};
+use std;
 use std::{ptr, slice};
 use std::marker::PhantomData;
 
@@ -97,7 +98,6 @@ pub trait Cursor<'txn> {
 }
 
 /// A read-only cursor for navigating the items within a database.
-#[derive(Debug)]
 pub struct RoCursor<'txn> {
     cursor: *mut ffi::MDB_cursor,
     _marker: PhantomData<fn() -> &'txn ()>,
@@ -106,6 +106,12 @@ pub struct RoCursor<'txn> {
 impl <'txn> Cursor<'txn> for RoCursor<'txn> {
     fn cursor(&self) -> *mut ffi::MDB_cursor {
         self.cursor
+    }
+}
+
+impl <'txn> std::fmt::Debug for RoCursor<'txn> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.write_str("RoCursor")
     }
 }
 
@@ -131,7 +137,6 @@ impl <'txn> RoCursor<'txn> {
 }
 
 /// A read-only cursor for navigating items within a database.
-#[derive(Debug)]
 pub struct RwCursor<'txn> {
     cursor: *mut ffi::MDB_cursor,
     _marker: PhantomData<fn() -> &'txn ()>,
@@ -140,6 +145,12 @@ pub struct RwCursor<'txn> {
 impl <'txn> Cursor<'txn> for RwCursor<'txn> {
     fn cursor(&self) -> *mut ffi::MDB_cursor {
         self.cursor
+    }
+}
+
+impl <'txn> std::fmt::Debug for RwCursor<'txn> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.write_str("RwCursor")
     }
 }
 
@@ -204,7 +215,6 @@ unsafe fn val_to_slice<'a>(val: ffi::MDB_val) -> &'a [u8] {
     slice::from_raw_parts(val.mv_data as *const u8, val.mv_size as usize)
 }
 
-#[derive(Debug)]
 pub struct Iter<'txn> {
     cursor: *mut ffi::MDB_cursor,
     op: c_uint,
@@ -217,6 +227,15 @@ impl <'txn> Iter<'txn> {
     /// Creates a new iterator backed by the given cursor.
     fn new<'t>(cursor: *mut ffi::MDB_cursor, op: c_uint, next_op: c_uint) -> Iter<'t> {
         Iter { cursor: cursor, op: op, next_op: next_op, _marker: PhantomData }
+    }
+}
+
+impl <'txn> std::fmt::Debug for Iter<'txn> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.debug_struct("Iter")
+            .field("op", &self.op)
+            .field("next_op", &self.next_op)
+            .finish()
     }
 }
 
@@ -246,7 +265,6 @@ impl <'txn> Iterator for Iter<'txn> {
     }
 }
 
-#[derive(Debug)]
 pub struct IterDup<'txn> {
     cursor: *mut ffi::MDB_cursor,
     op: c_uint,
@@ -258,6 +276,14 @@ impl <'txn> IterDup<'txn> {
     /// Creates a new iterator backed by the given cursor.
     fn new<'t>(cursor: *mut ffi::MDB_cursor, op: c_uint) -> IterDup<'t> {
         IterDup { cursor: cursor, op: op, _marker: PhantomData }
+    }
+}
+
+impl <'txn> std::fmt::Debug for IterDup<'txn> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.debug_struct("IterDup")
+            .field("op", &self.op)
+            .finish()
     }
 }
 

@@ -1,4 +1,5 @@
 use libc::{c_uint, c_void, size_t};
+use std;
 use std::{mem, ptr, slice};
 use std::marker::PhantomData ;
 
@@ -105,10 +106,15 @@ pub trait Transaction : Sized {
 }
 
 /// An LMDB read-only transaction.
-#[derive(Debug)]
 pub struct RoTransaction<'env> {
     txn: *mut ffi::MDB_txn,
     _marker: PhantomData<&'env ()>,
+}
+
+impl <'env> std::fmt::Debug for RoTransaction<'env> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.write_str("RoTransaction")
+    }
 }
 
 impl <'env> Drop for RoTransaction<'env> {
@@ -162,10 +168,15 @@ impl <'env> Transaction for RoTransaction<'env> {
 }
 
 /// An inactive read-only transaction.
-#[derive(Debug)]
 pub struct InactiveTransaction<'env> {
     txn: *mut ffi::MDB_txn,
     _marker: PhantomData<&'env ()>,
+}
+
+impl <'env> std::fmt::Debug for InactiveTransaction<'env> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.write_str("InactiveTransaction")
+    }
 }
 
 impl <'env> Drop for InactiveTransaction<'env> {
@@ -192,10 +203,15 @@ impl <'env> InactiveTransaction<'env> {
 }
 
 /// An LMDB read-write transaction.
-#[derive(Debug)]
 pub struct RwTransaction<'env> {
     txn: *mut ffi::MDB_txn,
     _marker: PhantomData<&'env ()>,
+}
+
+impl <'env> std::fmt::Debug for RwTransaction<'env> {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.write_str("RwTransaction")
+    }
 }
 
 impl <'env> Drop for RwTransaction<'env> {

@@ -1,4 +1,5 @@
 use libc::{c_uint, size_t};
+use std;
 use std::ffi::CString;
 #[cfg(unix)]
 use std::os::unix::ffi::OsStrExt;
@@ -30,7 +31,6 @@ impl OsStrExtLmdb for OsStr {
 /// An LMDB environment.
 ///
 /// An environment supports multiple databases, all residing in the same shared-memory map.
-#[derive(Debug)]
 pub struct Environment {
     env: *mut ffi::MDB_env,
     dbi_open_mutex: Mutex<()>,
@@ -156,6 +156,12 @@ impl Environment {
 
 unsafe impl Send for Environment {}
 unsafe impl Sync for Environment {}
+
+impl std::fmt::Debug for Environment {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::result::Result<(), std::fmt::Error> {
+        f.write_str("Environment")
+    }
+}
 
 impl Drop for Environment {
     fn drop(&mut self) {
